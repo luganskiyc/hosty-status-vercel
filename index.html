@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hosty Status (Vercel Test)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 24px; background:#0b1020; color:#e7ecff; }
+    .card { background:#131a33; border:1px solid #28345f; border-radius:12px; padding:14px; margin:10px 0; }
+    .label { color:#98a7d8; font-size:12px; text-transform:uppercase; }
+    .value { font-size:1.05rem; margin-top:6px; }
+    code { background:#1a2345; padding:2px 6px; border-radius:6px; }
+  </style>
+</head>
+<body>
+  <h1>🏠 Hosty Status — Vercel Deployment Test</h1>
+  <div class="card"><div class="label">Health</div><div id="health" class="value">-</div></div>
+  <div class="card"><div class="label">Agent State</div><div id="state" class="value">-</div></div>
+  <div class="card"><div class="label">Deployment</div><div id="deployment" class="value">-</div></div>
+  <div class="card"><div class="label">Notes</div><div id="notes" class="value">-</div></div>
+  <div class="card"><div class="label">API</div><div class="value"><code>/api/status</code></div></div>
+  <script>
+    async function refresh(){
+      const r = await fetch('/api/status');
+      const s = await r.json();
+      document.getElementById('health').textContent = s.health;
+      document.getElementById('state').textContent = s.agentState;
+      document.getElementById('deployment').textContent = `${s.deployment.platform} / ${s.deployment.env} / ${s.deployment.region}`;
+      document.getElementById('notes').textContent = s.notes;
+    }
+    refresh();
+    setInterval(refresh, 5000);
+  </script>
+</body>
+</html>
